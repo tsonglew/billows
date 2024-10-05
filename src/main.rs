@@ -1,15 +1,18 @@
-use std::error::Error;
-use tokio::net::{TcpListener, TcpStream};
+use actix_web::HttpServer;
 
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn Error>> {
-    let listener = TcpListener::bind("127.0.0.1:6379").await.unwrap();
+mod app;
+mod db;
 
-    loop {
-        let (socket, _) = listener.accept().await.unwrap();
-    }
-}
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    dotenv::dotenv().ok();
 
-async fn process(socket: TcpStream) {
-    let mut connection = Connection::new(socket);
+    let server_host = dotenv::var("SERVER_HOST").unwrap_or("127.0.0.1".to_string());
+    let server_port = dotenv::var("SERVER_PORT").unwrap_or("8080".to_string());
+    let server_location = format!("{}:{}", server_host, server_port);
+
+    HttpServer::new(|| app::app())
+        .bind(server_location)?
+        .run()
+        .await
 }

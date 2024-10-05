@@ -1,0 +1,17 @@
+use num_enum::IntoPrimitive;
+
+#[allow(non_camel_case_types)]
+#[derive(IntoPrimitive)]
+#[repr(u32)]
+pub enum ReservationError {
+    OK = 0,
+    // 0x400
+    ERR_RESERVATION_CREATE_INVALID_TIME_FORMAT = 0x40000001,
+    ERR_RESERVATION_CREATE_TIME_TOO_OLD = 0x40000002,
+    ERR_RESERVATION_CREATE_DB_ERROR = 0x40000003,
+    // 0x404
+    // 0x500
+    ERR_RESERVATION_CREATE_UNKNOWN_ERROR_1 = 0x50000002,
+    ERR_RESERVATION_LIST_UNKNOWN_ERROR_1 = 0x50000003,
+    ERR_RESERVATION_LIST_UNKNOWN_ERROR_2 = 0x50000004,
+}
