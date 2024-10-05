@@ -1,4 +1,4 @@
-use actix_web::HttpServer;
+use actix_web::{App, HttpServer};
 
 mod app;
 mod db;
@@ -11,7 +11,7 @@ async fn main() -> std::io::Result<()> {
     let server_port = dotenv::var("SERVER_PORT").unwrap_or("8080".to_string());
     let server_location = format!("{}:{}", server_host, server_port);
 
-    HttpServer::new(|| app::app())
+    HttpServer::new(|| App::new().configure(app::register_urls))
         .bind(server_location)?
         .run()
         .await
